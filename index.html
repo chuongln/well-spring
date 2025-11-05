@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trading or Exploring</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Engagement&family=Carlo+PlayScript&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Engagement&family=Carlo+PlayScript&display=swap"
+    rel="stylesheet">
 
   <style>
     * {
@@ -14,21 +22,26 @@
       user-select: none;
     }
 
-    html, body {
+    html,
+    body {
       height: 100vh;
       width: 100vw;
       margin: 0;
       padding: 0;
-      overflow: hidden; /* Không scroll */
-      background-color: #a9744f; /* nền nâu */
+      overflow: hidden;
+      /* Không scroll */
+      background-color: #f7e4b1;
+      /* nền nâu */
       color: #fff;
-      font-family: 'Engagement', cursive;
+      font-family: "Noto Sans", sans-serif;
       text-align: center;
     }
 
     h1 {
-      font-size: 5vh;
-      margin: 2vh 0;
+      font-size: 9vh;
+      margin: 1vh 0;
+      font-family: "Engagement", cursive;
+      color: #8d4b10;
     }
 
     .container {
@@ -36,13 +49,14 @@
       justify-content: space-around;
       align-items: flex-start;
       width: 100vw;
-      height: 80vh;
+      height: 77vh;
       padding: 0 2vw;
     }
 
-    .phrase-list, .column {
+    .phrase-list,
+    .column {
       width: 30vw;
-      height: 80vh;
+      height: 77vh;
       border-radius: 2vh;
       padding: 2vh;
       overflow: hidden;
@@ -52,11 +66,12 @@
       transition: all 0.2s ease;
     }
 
-    .phrase-list {
-      background-color: #fff3cd;
+    .phrase-list:has(.phrase) {
+      background-color: #ffd095;
       color: #333;
       justify-content: flex-start;
       gap: 1vh;
+      height: auto;
     }
 
     .column {
@@ -65,17 +80,20 @@
     }
 
     #trading {
-      background-color: #c0392b;
+      background-color: #ad4131;
+      color: #8d4b10;
     }
 
     #exploring {
-      background-color: #f1c40f;
+      background-color: #ffcf00;
       color: #333;
     }
 
     .column h2 {
-      font-size: 3vh;
+      font-size: 7vh;
       margin-bottom: 1vh;
+      font-family: "Dancing Script", cursive;
+      margin-top: 0;
     }
 
     .phrase {
@@ -85,7 +103,6 @@
       border-radius: 1.5vh;
       padding: 1.5vh;
       cursor: grab;
-      font-family: 'Carlo PlayScript', cursive;
       font-size: 2vh;
       text-align: center;
       transition: transform 0.2s;
@@ -120,16 +137,23 @@
     .column::-webkit-scrollbar {
       width: 0.7vh;
     }
+
     .column::-webkit-scrollbar-thumb {
-      background-color: rgba(255,255,255,0.3);
+      background-color: rgba(255, 255, 255, 0.3);
       border-radius: 1vh;
     }
   </style>
 </head>
+
 <body>
 
   <h1>Trading or Exploring</h1>
-
+  <div style="
+  color: #8d4b10;
+  margin-top: -6px;
+  margin-bottom: 4px;
+">Drag phrases to the correct column
+  </div>
   <div class="container">
     <div class="phrase-list" id="phrases">
       <div class="phrase" draggable="true">give salt to get honey</div>
@@ -142,11 +166,11 @@
     </div>
 
     <div class="column" id="trading">
-      <h2>Trading</h2>
+      <h2 style="color: #ffcf00">Trading</h2>
     </div>
 
     <div class="column" id="exploring">
-      <h2>Exploring</h2>
+      <h2 style="color: #8d4b10">Exploring</h2>
     </div>
   </div>
 
@@ -197,4 +221,5 @@
   </script>
 
 </body>
+
 </html>

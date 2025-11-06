@@ -200,47 +200,36 @@
 
   // Touch drag support (mobile/tablet)
   document.querySelectorAll('.phrase').forEach(item => {
-  item.addEventListener('touchstart', (e) => {
-    draggedItem = item;
+    item.addEventListener('touchstart', (e) => {
+      draggedItem = item;
+      cloneItem = item.cloneNode(true);
+      cloneItem.style.position = 'fixed';
+      cloneItem.style.pointerEvents = 'none';
+      cloneItem.style.opacity = '0.7';
+      cloneItem.style.zIndex = '9999';
+      document.body.appendChild(cloneItem);
+    });
 
-    const rect = item.getBoundingClientRect();
+    item.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      cloneItem.style.left = touch.clientX + 'px';
+      cloneItem.style.top = touch.clientY + 'px';
+    });
 
-    cloneItem = item.cloneNode(true);
-    cloneItem.style.position = 'fixed';
-    cloneItem.style.pointerEvents = 'none';
-    cloneItem.style.opacity = '0.8';
-    cloneItem.style.zIndex = '9999';
+    item.addEventListener('touchend', (e) => {
+      document.body.removeChild(cloneItem);
+      cloneItem = null;
 
-    // 🔥 Giữ nguyên kích thước gốc
-    cloneItem.style.width = rect.width + 'px';
-    cloneItem.style.height = rect.height + 'px';
-    cloneItem.style.left = rect.left + 'px';
-    cloneItem.style.top = rect.top + 'px';
+      const touch = e.changedTouches[0];
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
 
-    // ✅ Tắt hiển thị item thật lúc đang kéo (không bị giãn)
-    item.style.opacity = '0';
-
-    document.body.appendChild(cloneItem);
+      let dropColumn = element.closest('.column');
+      if (dropColumn) {
+        dropColumn.appendChild(draggedItem);
+      }
+      draggedItem = null;
+    });
   });
-
-  item.addEventListener('touchmove', (e) => {
-    const touch = e.touches[0];
-    cloneItem.style.left = touch.clientX - cloneItem.offsetWidth / 2 + 'px';
-    cloneItem.style.top = touch.clientY - cloneItem.offsetHeight / 2 + 'px';
-  });
-
-  item.addEventListener('touchend', (e) => {
-    item.style.opacity = '1';
-    document.body.removeChild(cloneItem);
-    cloneItem = null;
-
-    const touch = e.changedTouches[0];
-    const element = document.elementFromPoint(touch.clientX, touch.clientY);
-    let dropColumn = element?.closest('.column');
-    if (dropColumn) dropColumn.appendChild(draggedItem);
-    draggedItem = null;
-  });
-});
 
   // Desktop drop highlight / drop
   columns.forEach(column => {

@@ -1,225 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
+<script>
+  const phrasesContainer = document.getElementById('phrases');
+  const columns = document.querySelectorAll('.column');
+  let draggedItem = null;
+  let cloneItem = null;
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trading or Exploring</title>
-
-  <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
-
-  <link href="https://fonts.googleapis.com/css2?family=Engagement&family=Carlo+PlayScript&display=swap"
-    rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      user-select: none;
-    }
-
-    html,
-    body {
-      height: 100vh;
-      width: 100vw;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      /* Không scroll */
-      background-color: #f7e4b1;
-      /* nền nâu */
-      color: #fff;
-      font-family: "Noto Sans", sans-serif;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 9vh;
-      margin: 1vh 0;
-      font-family: "Engagement", cursive;
-      color: #8d4b10;
-    }
-
-    .container {
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      width: 100vw;
-      height: 77vh;
-      padding: 0 2vw;
-    }
-
-    .phrase-list,
-    .column {
-      width: 30vw;
-      height: 77vh;
-      border-radius: 2vh;
-      padding: 2vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.2s ease;
-    }
-
-    .phrase-list:has(.phrase) {
-      background-color: #ffd095;
-      color: #333;
-      justify-content: flex-start;
-      gap: 1vh;
-      height: auto;
-    }
-
-    .column {
-      justify-content: flex-start;
-      overflow-y: auto;
-    }
-
-    #trading {
-      background-color: #ad4131;
-      color: #8d4b10;
-    }
-
-    #exploring {
-      background-color: #ffcf00;
-      color: #333;
-    }
-
-    .column h2 {
-      font-size: 7vh;
-      margin-bottom: 1vh;
-      font-family: "Dancing Script", cursive;
-      margin-top: 0;
-    }
-
-    .phrase {
-      width: 90%;
-      background-color: #ffeaa7;
-      border: 0.3vh solid #f39c12;
-      border-radius: 1.5vh;
-      padding: 1.5vh;
-      cursor: grab;
-      font-size: 2vh;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-
-    .phrase:active {
-      cursor: grabbing;
-      transform: scale(1.05);
-    }
-
-    .highlight {
-      outline: 0.5vh dashed #fff;
-    }
-
-    .btn {
-      background-color: #4a2c1f;
-      color: #fff;
-      border: none;
-      border-radius: 1vh;
-      padding: 1vh 2vw;
-      font-size: 2vh;
-      cursor: pointer;
-      margin-top: 2vh;
-      transition: background 0.2s;
-    }
-
-    .btn:hover {
-      background-color: #6e3f2a;
-    }
-
-    /* Giới hạn thanh cuộn bên trong cột, không cho body scroll */
-    .column::-webkit-scrollbar {
-      width: 0.7vh;
-    }
-
-    .column::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.3);
-      border-radius: 1vh;
-    }
-  </style>
-</head>
-
-<body>
-
-  <h1>Trading or Exploring</h1>
-  <div style="
-  color: #8d4b10;
-  margin-top: -6px;
-  margin-bottom: 4px;
-">Drag phrases to the correct column
-  </div>
-  <div class="container">
-    <div class="phrase-list" id="phrases">
-      <div class="phrase" draggable="true">give salt to get honey</div>
-      <div class="phrase" draggable="true">travel to new islands</div>
-      <div class="phrase" draggable="true">give cloth for spices</div>
-      <div class="phrase" draggable="true">find land using the stars</div>
-      <div class="phrase" draggable="true">share pottery for glass</div>
-      <div class="phrase" draggable="true">exchange food for silk</div>
-      <div class="phrase" draggable="true">discover new animals and plants</div>
-    </div>
-
-    <div class="column" id="trading">
-      <h2 style="color: #ffcf00">Trading</h2>
-    </div>
-
-    <div class="column" id="exploring">
-      <h2 style="color: #8d4b10">Exploring</h2>
-    </div>
-  </div>
-
-  <button class="btn" id="reset">Play Again</button>
-
-  <script>
-    const phrasesContainer = document.getElementById('phrases');
-    const columns = document.querySelectorAll('.column');
-    let draggedItem = null;
-
-    function enableDragEvents(element) {
-      element.addEventListener('dragstart', (e) => {
-        draggedItem = e.target;
-        e.dataTransfer.effectAllowed = 'move';
-        setTimeout(() => (e.target.style.display = 'none'), 0);
-      });
-
-      element.addEventListener('dragend', (e) => {
-        e.target.style.display = 'block';
-        draggedItem = null;
-      });
-    }
-
-    document.querySelectorAll('.phrase').forEach(enableDragEvents);
-
-    columns.forEach(column => {
-      column.addEventListener('dragover', e => {
-        e.preventDefault();
-        column.classList.add('highlight');
-      });
-
-      column.addEventListener('dragleave', () => {
-        column.classList.remove('highlight');
-      });
-
-      column.addEventListener('drop', e => {
-        e.preventDefault();
-        column.classList.remove('highlight');
-        if (draggedItem) {
-          column.appendChild(draggedItem);
-        }
-      });
+  // Mouse drag support (desktop)
+  function enableDragEvents(element) {
+    element.addEventListener('dragstart', (e) => {
+      draggedItem = e.target;
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => (e.target.style.display = 'none'), 0);
     });
 
-    document.getElementById('reset').addEventListener('click', () => {
-      document.querySelectorAll('.phrase').forEach(p => phrasesContainer.appendChild(p));
+    element.addEventListener('dragend', (e) => {
+      e.target.style.display = 'block';
+      draggedItem = null;
     });
-  </script>
+  }
 
-</body>
+  document.querySelectorAll('.phrase').forEach(enableDragEvents);
 
-</html>
+  // Touch drag support (mobile/tablet)
+  document.querySelectorAll('.phrase').forEach(item => {
+    item.addEventListener('touchstart', (e) => {
+      draggedItem = item;
+      cloneItem = item.cloneNode(true);
+      cloneItem.style.position = 'fixed';
+      cloneItem.style.pointerEvents = 'none';
+      cloneItem.style.opacity = '0.7';
+      cloneItem.style.zIndex = '9999';
+      document.body.appendChild(cloneItem);
+    });
+
+    item.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      cloneItem.style.left = touch.clientX + 'px';
+      cloneItem.style.top = touch.clientY + 'px';
+    });
+
+    item.addEventListener('touchend', (e) => {
+      document.body.removeChild(cloneItem);
+      cloneItem = null;
+
+      const touch = e.changedTouches[0];
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+      let dropColumn = element.closest('.column');
+      if (dropColumn) {
+        dropColumn.appendChild(draggedItem);
+      }
+      draggedItem = null;
+    });
+  });
+
+  // Desktop drop highlight / drop
+  columns.forEach(column => {
+    column.addEventListener('dragover', e => {
+      e.preventDefault();
+      column.classList.add('highlight');
+    });
+
+    column.addEventListener('dragleave', () => {
+      column.classList.remove('highlight');
+    });
+
+    column.addEventListener('drop', () => {
+      column.classList.remove('highlight');
+      if (draggedItem) {
+        column.appendChild(draggedItem);
+      }
+    });
+  });
+
+  // Reset game
+  document.getElementById('reset').addEventListener('click', () => {
+    document.querySelectorAll('.phrase').forEach(p => phrasesContainer.appendChild(p));
+  });
+</script>
